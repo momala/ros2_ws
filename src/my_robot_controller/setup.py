@@ -1,4 +1,7 @@
 from setuptools import find_packages, setup
+import os
+from glob import glob
+
 
 package_name = 'my_robot_controller'
 
@@ -10,6 +13,7 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        (os.path.join('share', package_name, 'launch'), glob(os.path.join('launch', '*launch.[pxy][yma]*')))
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -21,7 +25,9 @@ setup(
     entry_points={
         'console_scripts': [
             "test_node = my_robot_controller.my_first_node:main",
-            "draw_circle = my_robot_controller.draw_circle:main"
+            "draw_circle = my_robot_controller.draw_circle:main",
+            "pose_sub = my_robot_controller.pose_subscriber:main",
+            "controller = my_robot_controller.turtle_controller:main"
         ],
     },
 )
