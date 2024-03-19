@@ -15,6 +15,8 @@ class TurtleNavigationNode(Node):
     def __init__(self):
         super().__init__("navigation")
         self.get_logger().info("our navigation is started")
+        self.goal_poses = [] # List to store goal poses
+        self.current_goal_index = 0
         
         self.initial_pose_publisher = self.create_publisher(
             PoseWithCovarianceStamped, "/initialpose", 10)
@@ -53,9 +55,15 @@ class TurtleNavigationNode(Node):
         
         
         # Initialize goal poses as dictionaries {x, y, w}
-        self.goal_poses.append({'x': 1.0, 'y': 1.0, 'w': 1.0})
-        self.goal_poses.append({'x': 2.0, 'y': 2.0, 'w': 1.0})
-        self.goal_poses.append({'x': 3.0, 'y': 3.0, 'w': 1.0})
+        
+        self.goal_poses.append({'x': 1.0, 'y': 0.0, 'w': 1.0})
+        self.goal_poses.append({'x': 2.0, 'y': 0.0, 'w': 1.0})
+        self.goal_poses.append({'x': 3.0, 'y': 0.0, 'w': 1.0})
+        
+        
+        time.sleep(5)
+        self.publish_next_goal()
+        
         
         
     def odom_callback(self, msg: Odometry):
@@ -75,7 +83,8 @@ class TurtleNavigationNode(Node):
             pose_msg.pose.position.x = self.goal_poses[self.current_goal_index]['x']
             pose_msg.pose.position.y = self.goal_poses[self.current_goal_index]['y']
             pose_msg.pose.orientation.w = self.goal_poses[self.current_goal_index]['w']
-            self.goal_pub.publish(pose_msg)
+            pose_msg.header.frame_id = 'map'
+            self.goal_pose_publisher.publish(pose_msg)
             self.get_logger().info("Published next goal: {}".format(self.current_goal_index))
         else:
             self.get_logger().info("All goals explored!")
