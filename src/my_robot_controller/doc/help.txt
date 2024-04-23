@@ -63,4 +63,7 @@ $ rocker --x11 --privileged --user --user-override-name iseauto --volume $HOME/a
 # Initializing the Docker:
 ====================================
 
-$ sudo apt update && sudo apt install -y vim && pip3 install setuptools==58.2.0 && echo "source /opt/ros/humble/setup.bash" > setup.bash && echo "source /autoware/install/setup.bash" > setup.bash && echo "source /home/iseauto/ros2_ws/install/setup.bash" > setup.bash && source ~/setup.bash && cd ros2_ws && colcon build --symlink-install && source install/setup.bash
+$ sudo apt update && sudo apt install -y vim && pip3 install setuptools==58.2.0 && echo "source /opt/ros/humble/setup.bash" > setup.bash \
+echo "source /autoware/install/setup.bash" > setup.bash \
+echo "source /home/iseauto/ros2_ws/install/setup.bash" > setup.bash \
+source ~/setup.bash && cd ros2_ws && colcon build --symlink-install && source install/setup.bash
