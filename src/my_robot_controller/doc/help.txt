@@ -1,0 +1,66 @@
+
+# if you dont have docker installed in your system follow the below link to install it:
+====================================
+
+# Add Docker's official GPG key:
+====================================
+$ sudo apt-get update
+
+$ sudo apt-get install ca-certificates curl
+
+$ sudo install -m 0755 -d /etc/apt/keyrings
+
+$ sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+
+$ sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add the repository to Apt sources:
+====================================
+$ echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+  
+$ sudo apt-get update
+
+# Finally installing the docker:
+====================================
+$ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+# Verify the docker installation:
+====================================
+$ sudo docker run hello-world
+
+# NB: To run the docker without root privilage follow the below commands:
+====================================
+$ sudo docker run hello-world
+
+$ sudo usermod -aG docker $USER
+
+$ newgrp docker
+
+--------------------------------------------
+# If you dont have rocker install it with the below command:
+====================================
+$ pip3 install rocker
+
+
+
+
+
+# Checking all your container in your system:
+====================================
+$ docker images
+
+# Load a docker image:
+====================================
+$ docker load -i <image_name.tar>
+
+# Running the docker:
+====================================
+$ rocker --x11 --privileged --user --user-override-name iseauto --volume $HOME/autoware_map $HOME/ros2_ws -- mohsen_aw:full
+
+# Initializing the Docker:
+====================================
+
+$ sudo apt update && sudo apt install -y vim && pip3 install setuptools==58.2.0 && echo "source /opt/ros/humble/setup.bash" > setup.bash && echo "source /autoware/install/setup.bash" > setup.bash && echo "source /home/iseauto/ros2_ws/install/setup.bash" > setup.bash && source ~/setup.bash && cd ros2_ws && colcon build --symlink-install && source install/setup.bash
