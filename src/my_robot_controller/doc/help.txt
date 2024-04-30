@@ -77,3 +77,15 @@ $ ros2 launch scenario_test_runner scenario_test_runner.launch.py \
   sensor_model:=sample_sensor_kit \
   vehicle_model:=sample_vehicle \
   output_directory:='./autoware_map'
+
+
+
+
+## This is for the yaml scenario
+    CatalogLocations:
+    VehicleCatalog:
+      Directory:
+        path: $(ros2 pkg prefix --share openscenario_experimental_catalog)/vehicle
+  RoadNetwork:
+    LogicFile:
+      filepath: $(ros2 pkg prefix --share kashiwanoha_map)/map
