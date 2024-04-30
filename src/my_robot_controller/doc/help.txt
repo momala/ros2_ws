@@ -58,12 +58,22 @@ $ docker load -i <image_name.tar>
 
 # Running the docker:
 ====================================
-$ rocker --x11 --privileged --user --user-override-name iseauto --volume $HOME/autoware_map $HOME/ros2_ws -- mohsen_aw:full
+$ rocker --x11 --privileged --user --volume $HOME/autoware_map $HOME/ros2_ws -- mohsen_aw:full
 
 # Initializing the Docker:
 ====================================
 
-$ sudo apt update && sudo apt install -y vim && pip3 install setuptools==58.2.0 && echo "source /opt/ros/humble/setup.bash" > setup.bash \
-echo "source /autoware/install/setup.bash" > setup.bash \
-echo "source /home/iseauto/ros2_ws/install/setup.bash" > setup.bash \
-source ~/setup.bash && cd ros2_ws && colcon build --symlink-install && source install/setup.bash
+$ sudo apt update ; sudo apt install -y vim ; pip3 install setuptools==58.2.0 ; echo "source /opt/ros/humble/setup.bash" >> setup.bash ; echo "source /autoware/install/setup.bash" >> setup.bash ; echo "source /home/iseauto/ros2_ws/install/setup.bash" >> setup.bash ; source ~/setup.bash ; cd ros2_ws ; colcon build --symlink-install ; source install/setup.bash ; cd
+
+
+
+
+# Running the Scenario Simulation
+
+$ ros2 launch scenario_test_runner scenario_test_runner.launch.py \
+  architecture_type:=awf/universe \
+  record:=false \
+  scenario:='$(find-pkg-share scenario_test_runner)/scenario/sample.yaml' \
+  sensor_model:=sample_sensor_kit \
+  vehicle_model:=sample_vehicle \
+  output_directory:='./autoware_map'
