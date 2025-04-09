@@ -28,7 +28,8 @@ setup(
             'draw_circle = my_robot_controller.draw_circle:main',
             'pose_sub = my_robot_controller.pose_sub:main',
             'turtle_control = my_robot_controller.turtle_controller:main',
-            'mapping = my_robot_controller.mapping:main'
+            'mapping = my_robot_controller.mapping:main',
+            'navigation = my_robot_controller.navigation:main',
         ],
     },
 )
