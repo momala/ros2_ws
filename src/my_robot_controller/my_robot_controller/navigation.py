@@ -6,6 +6,7 @@ from nav_msgs.msg import Odometry
 from geometry_msgs.msg import PoseStamped, PoseWithCovarianceStamped
 import tf_transformations
 import math
+import time
 
 class TurtleNavigationNode(Node):
     def __init__(self):
@@ -13,10 +14,10 @@ class TurtleNavigationNode(Node):
         self.get_logger().info("Navigation Node started")
 
         self.goal_poses = [  # Define goal positions and orientations
-            {'x': 1.5, 'y': -1.0, 'yaw': -30},
-            {'x': 2.5, 'y': 2.0, 'yaw': 60},
-            {'x': 2.5, 'y': -1.0, 'yaw': 0},
-            {'x': 1.5, 'y': 2.0, 'yaw': 90}
+            {'x': 0.17, 'y': -1.98, 'yaw': -30},
+            {'x': 1.72, 'y': 0.68, 'yaw': 60},
+            {'x': -0.38, 'y': 1.87, 'yaw': 0},
+            {'x': -0.52, 'y': -0.35, 'yaw': 90}
         ]
 
         self.current_goal_index = 0
@@ -32,14 +33,16 @@ class TurtleNavigationNode(Node):
             Odometry, "/odom", self.odom_callback, 10)
 
         # Publish the initial pose
+        time.sleep(5) # wait to let the simulation and turtlebot navigation to being loaded.
         self.publish_initial_pose()
+        time.sleep(5)
         self.publish_goal()
 
     def publish_initial_pose(self):
         initial_pose = PoseWithCovarianceStamped()
         initial_pose.header.frame_id = 'map'
-        initial_pose.pose.pose.position.x = 0.0
-        initial_pose.pose.pose.position.y = 0.0
+        initial_pose.pose.pose.position.x = -2.0
+        initial_pose.pose.pose.position.y = -0.5
 
         quaternion = tf_transformations.quaternion_from_euler(0, 0, 0)
         initial_pose.pose.pose.orientation.x = quaternion[0]
@@ -70,6 +73,7 @@ class TurtleNavigationNode(Node):
             rclpy.shutdown()
 
     def publish_goal(self):
+        
         goal = self.goal_poses[self.current_goal_index]
         pose_msg = PoseStamped()
         pose_msg.header.frame_id = 'map'
@@ -82,6 +86,7 @@ class TurtleNavigationNode(Node):
         pose_msg.pose.orientation.z = quaternion[2]
         pose_msg.pose.orientation.w = quaternion[3]
 
+        time.sleep(0.5)
         self.goal_pose_publisher.publish(pose_msg)
         self.get_logger().info(f"Published goal {self.current_goal_index + 1}")
 
