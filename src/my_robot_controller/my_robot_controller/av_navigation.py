@@ -10,6 +10,8 @@ class CarNavigationNode(Node):
     def __init__(self): 
         super().__init__("navigation") 
         self.get_logger().info("Mission planning started") 
+        self.goal_poses = [] # List to store goal poses
+        self.current_goal_index = 0
  
         # Publishers for initial and goal poses 
         self.initial_pose_publisher = self.create_publisher(PoseWithCovarianceStamped, "/initialpose", 10) 
@@ -29,16 +31,17 @@ class CarNavigationNode(Node):
     def setup_initial_pose(self): 
         initial_pose = PoseWithCovarianceStamped() 
         initial_pose.header.frame_id = 'map' 
-        initial_pose.pose.pose.position.x = 3748.15 
-        initial_pose.pose.pose.position.y = 73773.54 
+        initial_pose.pose.pose.position.x = 3888.959 
+        initial_pose.pose.pose.position.y = 73811.71 
         initial_pose.pose.pose.orientation.z = 0.85 
-        initial_pose.pose.pose.orientation.w = 0.51 
-        self.initial_pose_publisher.publish(initial_pose)
+        initial_pose.pose.pose.orientation.w = 0.50 
+        self.initial_pose_publisher.publish(initial_pose) 
         
     def setup_goals(self): 
         self.goal_poses = [ 
-        {'x': 3893.55, 'y': 73763.04, 'xx': 0.0, 'yy': 0.0, 'zz': 0.24, 'w': 0.97},
-        {'x': 3755.95, 'y': 73765.02, 'xx': 0.0, 'yy': 0.0, 'zz': -0.5, 'w': 0.86} 
+        {'x': 3889.76, 'y': 73757.77, 'xx': 0.0, 'yy': 0.0, 'zz': -0.96, 'w': 0.24}, 
+        {'x': 3809.31, 'y': 73765.72, 'xx': 0.0, 'yy': 0.0, 'zz': -0.96, 'w': 0.26},
+        {'x': 3696.58, 'y': 73732.67, 'xx': 0.0, 'yy': 0.0, 'zz': -0.49, 'w': 0.86} 
         ] 
         self.publish_goal() 
  
