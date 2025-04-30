@@ -5,6 +5,7 @@ from rclpy.node import Node
 from geometry_msgs.msg import PoseStamped, PoseWithCovarianceStamped 
 from nav_msgs.msg import Odometry 
 from tier4_system_msgs.srv import ChangeOperationMode 
+import time
  
 class CarNavigationNode(Node): 
     def __init__(self): 
@@ -35,6 +36,7 @@ class CarNavigationNode(Node):
         initial_pose.pose.pose.position.y = 73811.71 
         initial_pose.pose.pose.orientation.z = 0.85 
         initial_pose.pose.pose.orientation.w = 0.50 
+        time.sleep(10)
         self.initial_pose_publisher.publish(initial_pose) 
         
     def setup_goals(self): 
@@ -42,7 +44,8 @@ class CarNavigationNode(Node):
         {'x': 3889.76, 'y': 73757.77, 'xx': 0.0, 'yy': 0.0, 'zz': -0.96, 'w': 0.24}, 
         {'x': 3809.31, 'y': 73765.72, 'xx': 0.0, 'yy': 0.0, 'zz': -0.96, 'w': 0.26},
         {'x': 3696.58, 'y': 73732.67, 'xx': 0.0, 'yy': 0.0, 'zz': -0.49, 'w': 0.86} 
-        ] 
+        ]
+        time.sleep(5) 
         self.publish_goal() 
  
     def publish_goal(self): 
@@ -55,6 +58,9 @@ class CarNavigationNode(Node):
         pose_msg.pose.orientation.w = goal['w'] 
         self.goal_pose_publisher.publish(pose_msg) 
         self.get_logger().info(f"Published goal: {self.current_goal_index}")
+        time.sleep(5)
+        self.send_request()
+        
         
     def odom_callback(self, msg: Odometry): 
         current_pose = msg.pose.pose 
@@ -76,8 +82,21 @@ class CarNavigationNode(Node):
         self.change_mode_req.mode = 2  # Enable autonomous mode 
         future = self.change_mode_srv.call_async(self.change_mode_req) 
         
+        
+    def stop(self):
+        self.get_logger().info("stopping the node")
+        # self.destroy_node()
+        rclpy.shutdown()
+        raise KeyboardInterrupt
+        
 def main(args=None): 
     rclpy.init(args=args) 
     node = CarNavigationNode() 
-    rclpy.spin(node) 
-    rclpy.shutdown() 
+    try:
+        rclpy.spin(node)
+    except (KeyboardInterrupt):
+        node.destroy_node()
+        rclpy.shutdown()
+        
+if __name__ == '__main__':
+    main()

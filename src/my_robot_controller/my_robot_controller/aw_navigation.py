@@ -5,10 +5,8 @@ import rclpy
 from rclpy.node import Node
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import PoseStamped, PoseWithCovarianceStamped
-import tf_transformations
 from tier4_system_msgs.srv import ChangeOperationMode
 import time
-import math
 
 
 
@@ -38,8 +36,6 @@ class AWNavigationNode(Node):
         initial_pose.header.frame_id = 'map'
         initial_pose.pose.pose.position.x = 3694.65
         initial_pose.pose.pose.position.y = 73736.72
-                
-        # qq = tf_transformations.quaternion_from_euler(0,0,0)# x, y, z or Roll Pitch Yaw
         initial_pose.pose.pose.orientation.x = 0.0
         initial_pose.pose.pose.orientation.y = 0.0
         initial_pose.pose.pose.orientation.z = -0.52
@@ -47,21 +43,6 @@ class AWNavigationNode(Node):
         
         time.sleep(5)
         self.initial_pose_publisher.publish(initial_pose)
-        #################################
-        # time.sleep(1)
-        # ############# [Destination] ############
-        # goal = PoseStamped()
-        # goal.header.frame_id = 'map'
-        # goal.pose.position.x = 3.5
-        # goal.pose.position.y = 0.0
-        # qq = tf_transformations.quaternion_from_euler(0,0,1.57)# x, y, z or Roll Pitch Yaw
-        # goal.pose.orientation.x = qq[0]
-        # goal.pose.orientation.y = qq[1]
-        # goal.pose.orientation.z = qq[2]
-        # goal.pose.orientation.w = qq[3]
-        # self.goal_pose_publisher.publish(goal)
-        
-        
         # Initialize goal poses as dictionaries {x, y, w}
 
         self.goal_poses.append({'x': 3797.35, 'y': 73712.72, 'z': 0.24, 'w': 0.97})
